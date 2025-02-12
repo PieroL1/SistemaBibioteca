@@ -39,7 +39,7 @@ public class BibliotecarioControlador {
                 abrirDashboard(lector.getNombre(), false);
                 vista.dispose();
             } else {
-                vista.mostrarMensaje("Carnet incorrecto o lector no registrado.");
+                vista.mostrarMensaje("Carnet incorrecto o lector no registrado. ");
             }
         }
     }
