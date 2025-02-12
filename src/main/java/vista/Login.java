@@ -5,14 +5,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Login extends JFrame {
-    private JTextField txtDni;
+    private JTextField txtIdentificacion;
     private JButton btnIngresar;
+    private JComboBox<String> cmbTipoUsuario;
     private BibliotecarioControlador controlador;
     private JPanel mainPanel;
 
     public Login() {
         setTitle("Biblioteca El Sabio - Acceso al Sistema");
-        setSize(500, 600);  // Ventana más grande
+        setSize(500, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
@@ -42,49 +43,51 @@ public class Login extends JFrame {
         };
         mainPanel.setLayout(null);
 
-        // Panel para el contenido - Ajustado al nuevo tamaño
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(null);
-        contentPanel.setBounds(75, 60, 350, 460);  // Panel más grande
+        contentPanel.setBounds(75, 60, 350, 460);
         contentPanel.setBackground(new Color(255, 255, 255, 220));
 
-        // Icono de biblioteca
         JLabel iconLabel = new JLabel();
         ImageIcon libraryIcon = new ImageIcon(getClass().getResource("/library-large.png"));
-        Image img = libraryIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);  // Icono más grande
+        Image img = libraryIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         iconLabel.setIcon(new ImageIcon(img));
         iconLabel.setBounds(115, 30, 120, 120);
         contentPanel.add(iconLabel);
 
-        // Título
         JLabel titleLabel = new JLabel("Biblioteca El Sabio");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 21));  // Fuente más grande
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 21));
         titleLabel.setBounds(75, 160, 200, 40);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         contentPanel.add(titleLabel);
 
-        // Label DNI
-        JLabel dniLabel = new JLabel("DNI:");
-        dniLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        dniLabel.setBounds(75, 230, 200, 25);
-        contentPanel.add(dniLabel);
+        JLabel tipoUsuarioLabel = new JLabel("Tipo de Usuario:");
+        tipoUsuarioLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        tipoUsuarioLabel.setBounds(75, 200, 200, 25);
+        contentPanel.add(tipoUsuarioLabel);
 
-        // Campo de texto DNI
-        txtDni = new JTextField();
-        txtDni.setBounds(75, 260, 200, 35);
-        txtDni.setFont(new Font("Arial", Font.PLAIN, 16));
-        contentPanel.add(txtDni);
+        cmbTipoUsuario = new JComboBox<>(new String[]{"Bibliotecario", "Lector"});
+        cmbTipoUsuario.setBounds(75, 230, 200, 35);
+        contentPanel.add(cmbTipoUsuario);
 
-        // Botón de ingreso
+        JLabel identificacionLabel = new JLabel("Identificación:");
+        identificacionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        identificacionLabel.setBounds(75, 270, 200, 25);
+        contentPanel.add(identificacionLabel);
+
+        txtIdentificacion = new JTextField();
+        txtIdentificacion.setBounds(75, 300, 200, 35);
+        txtIdentificacion.setFont(new Font("Arial", Font.PLAIN, 16));
+        contentPanel.add(txtIdentificacion);
+
         btnIngresar = new JButton("Ingresar al Sistema");
-        btnIngresar.setBounds(75, 320, 200, 40);
+        btnIngresar.setBounds(75, 350, 200, 40);
         btnIngresar.setBackground(new Color(66, 139, 202));
         btnIngresar.setForeground(Color.WHITE);
         btnIngresar.setFont(new Font("Arial", Font.BOLD, 16));
         btnIngresar.setFocusPainted(false);
-        btnIngresar.addActionListener(e -> controlador.validarLogin(txtDni.getText()));
-        
-        // Efecto hover para el botón
+        btnIngresar.addActionListener(e -> controlador.validarLogin(txtIdentificacion.getText(), (String) cmbTipoUsuario.getSelectedItem()));
+
         btnIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnIngresar.setBackground(new Color(51, 122, 183));
@@ -95,21 +98,20 @@ public class Login extends JFrame {
         });
         
         contentPanel.add(btnIngresar);
-
         mainPanel.add(contentPanel);
         add(mainPanel);
         setResizable(false);
     }
     
     public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(
-            this,
-            new MensajeBienvenida(mensaje),
-            "Bienvenido",
-            JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje);
     }
     
-    public String getDni() {
-        return txtDni.getText().trim();
+    public String getIdentificacion() {
+        return txtIdentificacion.getText().trim();
+    }
+    
+    public String getTipoUsuario() {
+        return (String) cmbTipoUsuario.getSelectedItem();
     }
 }
