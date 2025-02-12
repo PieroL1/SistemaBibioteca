@@ -54,7 +54,7 @@ public class MensajeBienvenida extends JPanel {
             BorderFactory.createEmptyBorder(15, 20, 15, 20)
         ));
 
-        JLabel mensajeLabel = new JLabel("<html><div style='text-align: center; width: 300px;'>"
+        JLabel mensajeLabel = new JLabel("<html><div style='text-align: center; width: 250px;'>"
                 + "<span style='font-size: 14px; color: #495057;'>" + mensaje + "</span><br>"
                 + "<span style='font-size: 14px; font-weight: bold; color: #343a40;'> " + nombreUsuario + "</span></div></html>");
         mensajeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
