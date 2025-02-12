@@ -6,7 +6,7 @@ public class Lector {
     private String apellido;
     private String carnet;
 
-    public Lector(int idUsuario, String nombre, String apellido, String carnet) {
+    public Lector(int idUsuario, String nombre, String apellido, String carnet, String estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
