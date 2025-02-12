@@ -103,9 +103,11 @@ public class Login extends JFrame {
         setResizable(false);
     }
     
-    public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
-    }
+    public void mostrarMensaje(String nombreUsuario) {
+    MensajeBienvenida mensajePanel = new MensajeBienvenida(nombreUsuario);
+    JOptionPane.showMessageDialog(this, mensajePanel, "Acceso Exitoso", JOptionPane.PLAIN_MESSAGE);
+}
+
     
     public String getIdentificacion() {
         return txtIdentificacion.getText().trim();

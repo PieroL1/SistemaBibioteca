@@ -26,7 +26,7 @@ public class BibliotecarioControlador {
         if (tipoUsuario.equals("Bibliotecario")) {
             Bibliotecario bibliotecario = bibliotecarioDAO.obtenerBibliotecarioPorDNI(identificacion);
             if (bibliotecario != null) {
-                vista.mostrarMensaje("Bienvenido, " + bibliotecario.getNombre());
+                vista.mostrarMensaje( bibliotecario.getNombre());
                 abrirDashboard(bibliotecario.getNombre(), true);
                 vista.dispose();
             } else {
