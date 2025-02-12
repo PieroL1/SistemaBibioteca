@@ -20,10 +20,10 @@ public class BibliotecarioControlador {
     public void validarLogin(String dni) {
         Bibliotecario bibliotecario = dao.obtenerBibliotecarioPorDNI(dni);
         if (bibliotecario != null) {
-            vista.mostrarMensaje("Bienvenido, " + bibliotecario.getNombre());
+            vista.mostrarMensaje( bibliotecario.getNombre());
             // Aquí podrías abrir la ventana principal del sistema
         } else {
-            vista.mostrarMensaje("DNI incorrecto o bibliotecario no registrado.");
+            vista.mostrarMensaje("DNI incorrecto o sin registro.");
         }
     }
 
