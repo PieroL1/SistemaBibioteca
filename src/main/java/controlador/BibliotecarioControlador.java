@@ -36,7 +36,7 @@ public class BibliotecarioControlador {
             Lector lector = lectorDAO.obtenerLectorPorCarnet(identificacion);
             if (lector != null) {
                 vista.mostrarMensaje("Bienvenido, " + lector.getNombre());
-                abrirDashboard(lector.getNombre(), true);
+                abrirDashboard(lector.getNombre(), false);
                 vista.dispose();
             } else {
                 vista.mostrarMensaje("Carnet incorrecto o lector no registrado. ");
