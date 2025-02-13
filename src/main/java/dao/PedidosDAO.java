@@ -1,6 +1,9 @@
 package dao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import modelo.Pedido;
 
 public class PedidosDAO {
     private Connection conexion;
@@ -35,5 +38,52 @@ public class PedidosDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    
+    public List<Pedido> obtenerPedidosPorLector(int idUsuario) {
+    String sql = """
+        SELECT p.id_pedido, l.titulo AS libro_titulo,
+               p.fecha_pedido, p.estado,
+               l.id_libro AS id_libro
+        FROM pedidos p
+        JOIN libros l ON p.id_libro = l.id_libro
+        WHERE p.id_usuario = ?
+        ORDER BY p.fecha_pedido DESC
+        """;
+
+    List<Pedido> pedidos = new ArrayList<>();
+    try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+        stmt.setInt(1, idUsuario);
+        ResultSet rs = stmt.executeQuery();
+        
+        while (rs.next()) {
+            Pedido pedido = new Pedido(
+                rs.getInt("id_pedido"),
+                idUsuario,
+                rs.getInt("id_libro"),
+                rs.getDate("fecha_pedido"),
+                rs.getString("estado"),
+                    rs.getString("libro_titulo")
+            );
+            pedidos.add(pedido);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error en la consulta: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return pedidos;
+}
+
+    public boolean actualizarEstadoPedido(int idPedido, String nuevoEstado) {
+        String sql = "UPDATE pedidos SET estado = ? WHERE id_pedido = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setString(1, nuevoEstado);
+            stmt.setInt(2, idPedido);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

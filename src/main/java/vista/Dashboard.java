@@ -1,20 +1,32 @@
 package vista;
 
+import dao.PedidosDAO;
+import db.ConexionBD;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
+import java.sql.Connection;
+import modelo.Session;
 
 public class Dashboard extends JFrame {
     private JButton btnBuscarLibros;
     private JButton btnEstadoPedidos;
     private JButton btnSalir;
     private JDesktopPane desktopPane;
+    private int nombreUsuarioActual;
 
     public Dashboard(String nombreUsuario, boolean esBibliotecario) {
     setTitle("Dashboard - Biblioteca El Sabio");
     setSize(800, 600);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setLocationRelativeTo(null);
+    
+    // Verificar que hay un usuario autenticado
+        if (Session.getIdUsuario() == -1) {
+            System.out.println("No hay usuario autenticado");
+            return;
+        }
     
     // Crear el layout principal
     setLayout(new BorderLayout());
@@ -142,45 +154,52 @@ private JButton crearBotonDecorado(String texto, Color colorFondo, Color colorTe
         });
     }
 
-    private void abrirEstadoPedidosVista() {
-       /* // Verificar si ya hay una ventana de estado de pedidos abierta
-        for (JInternalFrame frame : desktopPane.getAllFrames()) {
-            if (frame instanceof EstadoPedidosVista) {
-                try {
-                    frame.setSelected(true);
-                    return;
-                } catch (java.beans.PropertyVetoException e) {
-                    e.printStackTrace();
-                }
+   private void abrirEstadoPedidosVista() {
+    // Verificar si ya hay una ventana abierta
+    for (JInternalFrame frame : desktopPane.getAllFrames()) {
+        if (frame instanceof EstadoPedidosVista) {
+            try {
+                frame.setSelected(true);
+                return;
+            } catch (PropertyVetoException e) {
+                e.printStackTrace();
             }
         }
+    }
 
-        // Si no hay una ventana abierta, crear una nueva
-        SwingUtilities.invokeLater(() -> {
-            try {
-                EstadoPedidosVista estadoVista = new EstadoPedidosVista();
-                desktopPane.add(estadoVista);
-                estadoVista.setVisible(true);
+    SwingUtilities.invokeLater(() -> {
+        try {
+            Connection conexion = ConexionBD.obtenerConexion();
+            if (conexion != null) {
+                EstadoPedidosVista vista = new EstadoPedidosVista(
+                    new PedidosDAO(conexion)
+                );
+                desktopPane.add(vista);
+                vista.setVisible(true);
                 
-                // Centrar la ventana interna
                 Dimension desktopSize = desktopPane.getSize();
-                Dimension frameSize = estadoVista.getSize();
-                estadoVista.setLocation(
+                Dimension frameSize = vista.getSize();
+                vista.setLocation(
                     (desktopSize.width - frameSize.width) / 2,
                     (desktopSize.height - frameSize.height) / 2
                 );
                 
-                estadoVista.setSelected(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+                vista.setSelected(true);
+            } else {
                 JOptionPane.showMessageDialog(this,
-                    "Error al abrir la ventana de estado de pedidos: " + e.getMessage(),
+                    "Error al conectar con la base de datos",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             }
-        });*/
-    }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Error al abrir la ventana de pedidos: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    });
+}
     public void setSalirListener(ActionListener listener) {
         btnSalir.addActionListener(listener);
     }
