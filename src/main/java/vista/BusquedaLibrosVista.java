@@ -29,50 +29,149 @@ public class BusquedaLibrosVista extends JInternalFrame {
     }
 
     private void inicializarComponentes() {
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    // Panel principal con diseño BorderLayout y bordes decorativos
+    JPanel panelPrincipal = new JPanel(new BorderLayout(15, 15));
+    panelPrincipal.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.decode("#4a90e2"), 1),
+        BorderFactory.createEmptyBorder(15, 15, 15, 15)
+    ));
 
-        JPanel panelBusqueda = new JPanel(new GridLayout(2, 4, 5, 5));
-        panelBusqueda.add(new JLabel("Título:"));
-        txtTitulo = new JTextField();
-        panelBusqueda.add(txtTitulo);
+    // Panel de título con fondo azul claro
+    JPanel panelTitulo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    panelTitulo.setBackground(Color.decode("#e6f3ff"));
+    
+    JLabel lblBienvenida = new JLabel("¡Bienvenido!");
+    lblBienvenida.setFont(new Font("Segoe UI", Font.BOLD, 16));
+    lblBienvenida.setForeground(Color.decode("#4a90e2"));
+    panelTitulo.add(lblBienvenida);
 
-        panelBusqueda.add(new JLabel("Autor:"));
-        txtAutor = new JTextField();
-        panelBusqueda.add(txtAutor);
+    // Panel de botones con fondo gris claro
+    JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+    panelBotones.setBackground(Color.decode("#f5f5f5"));
+    panelBotones.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#e0e0e0")));
+    
+    btnBuscar = new JButton("Buscar");
+    btnBuscar.setBackground(Color.decode("#4a90e2"));
+    btnBuscar.setForeground(Color.WHITE);
+    btnBuscar.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    btnBuscar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    
+    btnLimpiar = new JButton("Limpiar");
+    btnLimpiar.setBackground(Color.decode("#ff6b6b"));
+    btnLimpiar.setForeground(Color.WHITE);
+    btnLimpiar.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    btnLimpiar.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    
+    panelBotones.add(btnLimpiar);
+    panelBotones.add(btnBuscar);
 
-        panelBusqueda.add(new JLabel("Categoría:"));
-        cbCategoria = new JComboBox<>();
-        panelBusqueda.add(cbCategoria);
+    // Panel de campos de búsqueda con diseño GridBagLayout
+    JPanel panelBusqueda = new JPanel(new GridBagLayout());
+    panelBusqueda.setBackground(Color.WHITE);
+    panelBusqueda.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createEmptyBorder(15, 15, 15, 15),
+        BorderFactory.createLineBorder(Color.decode("#e0e0e0"))
+    ));
+    
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(5, 5, 5, 5);
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 1;
 
-        panelBusqueda.add(new JLabel("Año:"));
-        txtAnio = new JTextField();
-        panelBusqueda.add(txtAnio);
+    // Campos de búsqueda organizados en filas
+    JLabel lblTitulo = new JLabel("Título:");
+    lblTitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    gbc.gridx = 0; gbc.gridy = 0;
+    panelBusqueda.add(lblTitulo, gbc);
+    
+    txtTitulo = new JTextField(20);
+    txtTitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    txtTitulo.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.decode("#e0e0e0")),
+        BorderFactory.createEmptyBorder(5, 8, 5, 8)
+    ));
+    gbc.gridx = 1; gbc.gridy = 0;
+    panelBusqueda.add(txtTitulo, gbc);
 
-        btnBuscar = new JButton("Buscar");
-        panelBusqueda.add(btnBuscar);
+    JLabel lblAutor = new JLabel("Autor:");
+    lblAutor.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    gbc.gridx = 0; gbc.gridy = 1;
+    panelBusqueda.add(lblAutor, gbc);
+    
+    txtAutor = new JTextField(20);
+    txtAutor.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    txtAutor.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.decode("#e0e0e0")),
+        BorderFactory.createEmptyBorder(5, 8, 5, 8)
+    ));
+    gbc.gridx = 1; gbc.gridy = 1;
+    panelBusqueda.add(txtAutor, gbc);
 
-        btnLimpiar = new JButton("Limpiar");
-        panelBusqueda.add(btnLimpiar);
+    JLabel lblCategoria = new JLabel("Categoría:");
+    lblCategoria.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    gbc.gridx = 0; gbc.gridy = 2;
+    panelBusqueda.add(lblCategoria, gbc);
+    
+    cbCategoria = new JComboBox<>();
+    cbCategoria.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    cbCategoria.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.decode("#e0e0e0")),
+        BorderFactory.createEmptyBorder(5, 8, 5, 8)
+    ));
+    gbc.gridx = 1; gbc.gridy = 2;
+    panelBusqueda.add(cbCategoria, gbc);
 
-        mainPanel.add(panelBusqueda, BorderLayout.NORTH);
+    JLabel lblAnio = new JLabel("Año:");
+    lblAnio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    gbc.gridx = 0; gbc.gridy = 3;
+    panelBusqueda.add(lblAnio, gbc);
+    
+    txtAnio = new JTextField(10);
+    txtAnio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    txtAnio.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.decode("#e0e0e0")),
+        BorderFactory.createEmptyBorder(5, 8, 5, 8)
+    ));
+    gbc.gridx = 1; gbc.gridy = 3;
+    panelBusqueda.add(txtAnio, gbc);
 
-        // Definir modelo de tabla con una columna extra para botones
-        String[] columnas = {"ID", "Título", "Autor", "Categoría", "Editorial", "Año", "Stock", "Acción"};
-        modeloTabla = new DefaultTableModel(columnas, 0);
+    // Panel de resultados con scroll
+    String[] columnas = {"ID", "Título", "Autor", "Categoría", "Editorial", "Año", "Stock", "Acción"};
+    modeloTabla = new DefaultTableModel(columnas, 0);
+    tblResultados = new JTable(modeloTabla) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
+    tblResultados.setRowHeight(30);
+    tblResultados.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+    tblResultados.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+    tblResultados.getTableHeader().setBackground(Color.decode("#4a90e2"));
+    tblResultados.getTableHeader().setForeground(Color.WHITE);
+    
+    JScrollPane scrollPane = new JScrollPane(tblResultados);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+    scrollPane.getViewport().setBackground(Color.WHITE);
 
-        tblResultados = new JTable(modeloTabla);
-        tblResultados.setRowHeight(30);
+    // Organización final del panel principal
+    JPanel panelSuperior = new JPanel(new BorderLayout(0, 10));
+    panelSuperior.add(panelTitulo, BorderLayout.NORTH);
+    panelSuperior.add(panelBotones, BorderLayout.SOUTH);
+    
+    JPanel panelCentral = new JPanel(new BorderLayout(0, 15));
+    panelCentral.add(panelBusqueda, BorderLayout.NORTH);
+    panelCentral.add(scrollPane, BorderLayout.CENTER);
 
-        JScrollPane scrollPane = new JScrollPane(tblResultados);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-        
-        setContentPane(mainPanel);
+    panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
+    panelPrincipal.add(panelCentral, BorderLayout.CENTER);
 
-        // Eventos de botones
-        btnBuscar.addActionListener(e -> realizarBusqueda());
-        btnLimpiar.addActionListener(e -> limpiarCampos());
-    }
+    setContentPane(panelPrincipal);
+
+    // Eventos de botones
+    btnBuscar.addActionListener(e -> realizarBusqueda());
+    btnLimpiar.addActionListener(e -> limpiarCampos());
+}
 
     private void realizarBusqueda() {
         if (controlador == null) {

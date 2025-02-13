@@ -11,49 +11,97 @@ public class Dashboard extends JFrame {
     private JDesktopPane desktopPane;
 
     public Dashboard(String nombreUsuario, boolean esBibliotecario) {
-        setTitle("Dashboard - Biblioteca El Sabio");
-        setSize(800, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        
-        // Crear el layout principal
-        setLayout(new BorderLayout());
-        
-        // Panel superior para la bienvenida y botones
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        
-        JLabel lblBienvenida = new JLabel("Bienvenido, " + nombreUsuario);
-        topPanel.add(lblBienvenida);
-        
-        if (!esBibliotecario) {
-            btnBuscarLibros = new JButton("Buscar Libros");
-            btnBuscarLibros.addActionListener(e -> abrirBusquedaLibrosVista());
-            topPanel.add(btnBuscarLibros);
+    setTitle("Dashboard - Biblioteca El Sabio");
+    setSize(800, 600);
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setLocationRelativeTo(null);
+    
+    // Crear el layout principal
+    setLayout(new BorderLayout());
+    
+    // Panel superior para la bienvenida y botones
+    JPanel topPanel = new JPanel();
+    topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+    topPanel.setBackground(Color.WHITE);
+    topPanel.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("#e0e0e0")),
+        BorderFactory.createEmptyBorder(10, 15, 10, 15)
+    ));
+    
+    JLabel lblBienvenida = new JLabel("Bienvenido, " + nombreUsuario);
+    lblBienvenida.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    topPanel.add(lblBienvenida);
+    
+    if (!esBibliotecario) {
+        btnBuscarLibros = crearBotonDecorado("Buscar Libros", 
+            Color.decode("#4a90e2"), Color.WHITE);
+        btnBuscarLibros.addActionListener(e -> abrirBusquedaLibrosVista());
+        topPanel.add(btnBuscarLibros);
 
-            btnEstadoPedidos = new JButton("Ver Estado de Pedidos");
-            btnEstadoPedidos.addActionListener(e -> abrirEstadoPedidosVista());
-            topPanel.add(btnEstadoPedidos);
-        }
-        
-        btnSalir = new JButton("Salir");
-        topPanel.add(btnSalir);
-        
-        // Agregar el panel superior
-        add(topPanel, BorderLayout.NORTH);
-        
-        // Crear y agregar el JDesktopPane
-        desktopPane = new JDesktopPane();
-        desktopPane.setBackground(new Color(240, 240, 240));
-        add(desktopPane, BorderLayout.CENTER);
-        
-        // Barra de estado en la parte inferior
-        JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        statusBar.setBorder(BorderFactory.createEtchedBorder());
-        JLabel statusLabel = new JLabel("Biblioteca El Sabio - Sistema de Gestión");
-        statusBar.add(statusLabel);
-        add(statusBar, BorderLayout.SOUTH);
+        btnEstadoPedidos = crearBotonDecorado("Ver Estado de Pedidos", 
+            Color.decode("#2ecc71"), Color.WHITE);
+        btnEstadoPedidos.addActionListener(e -> abrirEstadoPedidosVista());
+        topPanel.add(btnEstadoPedidos);
     }
+    
+    // En el constructor de Dashboard
+btnSalir = crearBotonDecorado("Salir", 
+    Color.decode("#e74c3c"), Color.WHITE);
+btnSalir.addActionListener(e -> {
+    int opcion = JOptionPane.showConfirmDialog(
+        this,
+        "¿Está seguro que desea salir?",
+        "Confirmar Salida",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
+    
+    if (opcion == JOptionPane.YES_OPTION) {
+        this.dispose();
+        new Login().setVisible(true);
+    }
+});
+topPanel.add(btnSalir);
+    
+    // Agregar el panel superior
+    add(topPanel, BorderLayout.NORTH);
+    
+    // Crear y agregar el JDesktopPane
+    desktopPane = new JDesktopPane();
+    desktopPane.setBackground(new Color(240, 240, 240));
+    add(desktopPane, BorderLayout.CENTER);
+    
+    // Barra de estado en la parte inferior
+    JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    statusBar.setBorder(BorderFactory.createEtchedBorder());
+    JLabel statusLabel = new JLabel("Biblioteca El Sabio - Sistema de Gestión");
+    statusBar.add(statusLabel);
+    add(statusBar, BorderLayout.SOUTH);
+}
+
+private JButton crearBotonDecorado(String texto, Color colorFondo, Color colorTexto) {
+    JButton boton = new JButton(texto);
+    boton.setBackground(colorFondo);
+    boton.setForeground(colorTexto);
+    boton.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    boton.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(Color.WHITE, 1),
+        BorderFactory.createEmptyBorder(8, 15, 8, 15)
+    ));
+    boton.setFocusPainted(false);
+    boton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    boton.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            boton.setBackground(colorFondo.darker());
+        }
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            boton.setBackground(colorFondo);
+        }
+    });
+    return boton;
+}
 
     private void abrirBusquedaLibrosVista() {
         // Verificar si ya hay una ventana de búsqueda abierta
