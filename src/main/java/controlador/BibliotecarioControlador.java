@@ -9,6 +9,7 @@ import vista.Dashboard;
 import javax.swing.SwingUtilities;
 import java.sql.Connection;
 import db.ConexionBD;
+import modelo.Session;
 
 public class BibliotecarioControlador {
     private Login vista;
@@ -23,26 +24,35 @@ public class BibliotecarioControlador {
     }
 
     public void validarLogin(String identificacion, String tipoUsuario) {
-        if (tipoUsuario.equals("Bibliotecario")) {
-            Bibliotecario bibliotecario = bibliotecarioDAO.obtenerBibliotecarioPorDNI(identificacion);
-            if (bibliotecario != null) {
-                vista.mostrarMensaje( bibliotecario.getNombre());
-                abrirDashboard(bibliotecario.getNombre(), true);
-                vista.dispose();
-            } else {
-                vista.mostrarMensaje("DNI incorrecto o bibliotecario no registrado.");
-            }
-        } else if (tipoUsuario.equals("Lector")) {
-            Lector lector = lectorDAO.obtenerLectorPorCarnet(identificacion);
-            if (lector != null) {
-                vista.mostrarMensaje("Bienvenido, " + lector.getNombre());
-                abrirDashboard(lector.getNombre(), false);
-                vista.dispose();
-            } else {
-                vista.mostrarMensaje("Carnet incorrecto o lector no registrado. ");
-            }
+    if (tipoUsuario.equals("Bibliotecario")) {
+        Bibliotecario bibliotecario = bibliotecarioDAO.obtenerBibliotecarioPorDNI(identificacion);
+        if (bibliotecario != null) {
+            vista.mostrarMensaje("Bienvenido, " + bibliotecario.getNombre());
+            
+            // Guardar el ID del bibliotecario en la sesión
+            Session.setIdUsuario(bibliotecario.getId());
+
+            abrirDashboard(bibliotecario.getNombre(), true);
+            vista.dispose();
+        } else {
+            vista.mostrarMensaje("DNI incorrecto o bibliotecario no registrado.");
+        }
+    } else if (tipoUsuario.equals("Lector")) {
+        Lector lector = lectorDAO.obtenerLectorPorCarnet(identificacion);
+        if (lector != null) {
+            vista.mostrarMensaje("Bienvenido, " + lector.getNombre());
+
+            // Guardar el ID del lector en la sesión
+            Session.setIdUsuario(lector.getId());
+
+            abrirDashboard(lector.getNombre(), false);
+            vista.dispose();
+        } else {
+            vista.mostrarMensaje("Carnet incorrecto o lector no registrado.");
         }
     }
+}
+
 
     private void abrirDashboard(String nombreUsuario, boolean esBibliotecario) {
         SwingUtilities.invokeLater(() -> {

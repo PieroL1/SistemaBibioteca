@@ -1,24 +1,26 @@
 package modelo;
 
 public class Lector {
-    private int idUsuario;
+    private int id;
     private String nombre;
     private String apellido;
-    private String carnet;
+    private String codigoCarnet;
+    private String estado;
 
-    public Lector(int idUsuario, String nombre, String apellido, String carnet, String estado) {
-        this.idUsuario = idUsuario;
+    public Lector(int id, String nombre, String apellido, String codigoCarnet, String estado) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.carnet = carnet;
+        this.codigoCarnet = codigoCarnet;
+        this.estado = estado;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getId() {
+        return id;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -37,11 +39,22 @@ public class Lector {
         this.apellido = apellido;
     }
 
-    public String getCarnet() {
-        return carnet;
+    public String getCodigoCarnet() {
+        return codigoCarnet;
     }
 
-    public void setCarnet(String carnet) {
-        this.carnet = carnet;
+    public void setCodigoCarnet(String codigoCarnet) {
+        this.codigoCarnet = codigoCarnet;
     }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    
+    
 }
