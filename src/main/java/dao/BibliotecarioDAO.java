@@ -11,13 +11,13 @@ public class BibliotecarioDAO {
     }
 
   public Bibliotecario obtenerBibliotecarioPorDNI(String dni) {
-    String sql = "SELECT id_usuario, dni, nombre FROM Bibliotecarios WHERE dni = ?";
+    String sql = "SELECT id_bibliotecario, dni, nombre FROM Bibliotecarios WHERE dni = ?";
     try (PreparedStatement ps = conexion.prepareStatement(sql)) {
         ps.setString(1, dni);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return new Bibliotecario(
-                rs.getInt("id_usuario"),  // Obtener el ID
+                rs.getInt("id_bibliotecario"),  // Obtener el ID
                 rs.getString("dni"),
                 rs.getString("nombre")
             );
